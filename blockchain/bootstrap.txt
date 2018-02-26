@@ -1,0 +1,37 @@
+# Setup Docker
+sudo apt-get update
+wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
+sudo tar -xvf go1.7.4.linux-amd64.tar.gz
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+sudo apt-get install -y docker-engine
+sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)"
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Install HyperLedger Prequisites
+curl -O https://hyperledger.github.io/composer/prereqs-ubuntu.sh
+chmod u+x prereqs-ubuntu.sh
+./prereqs-ubuntu.sh
+
+# Install CLI tools
+npm install -g composer-cli
+npm install -g composer-rest-server
+npm install -g generator-hyperledger-composer
+npm install -g yo
+
+# Install playground
+npm install -g composer-playground
+
+# Install Hyperledger Fabric
+mkdir ~/fabric-tools && cd ~/fabric-tools
+curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.zip
+unzip fabric-dev-servers.zip
+
+# Download local hyoerledger fabric runtime
+cd ~/fabric-tools
+./downloadFabric.sh
+
+# Start fabric runtime for the first time
+cd ~/fabric-tools
+./startFabric.sh
+./createPeerAdminCard.sh
